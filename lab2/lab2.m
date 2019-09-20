@@ -35,3 +35,7 @@ sound(y2000,2000);
 %sound(y4000,4000);
 %sound(y6000,6000);
 %sound(y12000,12000);
+
+%%-----ANSWER TO PROBLEM 2 -------
+% The hihger the sampling frequency the input audio file is more clear and the lower the smalping frequency the more 
+%muffled the noise becomes
