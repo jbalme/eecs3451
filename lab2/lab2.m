@@ -24,7 +24,7 @@
 %% Problem 2
 
 [y,Fs] = audioread('P_2_1.wav');
-plot(y, Fs);
+plot(y);
 fprintf('The sampling rate of the input file is %d', Fs);
 y2000 = resample(y,2000,Fs);
 y4000 = resample(y,4000,Fs);
