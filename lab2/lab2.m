@@ -86,13 +86,13 @@ end
 [y,Fs] = audioread('P_3_2.wav');
 plot([1:size(y)]./Fs,y);
 
-y2=double(y);
+y2=mydouble(y);
 fprintf('Playing at input frequency %d Hz, doubled to %d\n', Fs, Fs*2);
 playsound(y2,Fs*2);
 
 for Fs2=[2000,4000,6000,12000]
    y2=resample(y,Fs2,Fs);
-   y3=double(y2);
+   y3=mydouble(y2);
    fprintf('Playing resampled to %d Hz, then doubled to %d\n', Fs2, Fs2*2);
    playsound(y3,Fs2*2);
 end
@@ -121,18 +121,9 @@ fprintf('Playing at input frequency %d Hz\n', Fs);
 playsound(y2,Fs);
 
 %% Function Definitions
+%
+% <include>playsound.m</include>
+%
+% <include>mydouble.m</include>
 
-function playsound(y, Fs)
-    % On Linux, refuses to play at anything other than 44100 Hz
-    if isunix()
-        y = resample(y,44100,Fs);
-        Fs = 44100;
-    end
-    player = audioplayer(y,Fs);
-    playblocking(player);
-end
 
-function out = double(in)
-	tmp = 1:.5:length(in);
-	out = (in(floor(tmp)) + in(ceil(tmp)))/2;
-end
