@@ -120,78 +120,59 @@ y2=flipud(y);
 fprintf('Playing at input frequency %d Hz\n', Fs);
 playsound(y2,Fs);
 
+%%Problem 6a
+%
+% <include>problem6_x.m</include>
+%
+
+%% Problem 6a i
+t = -5:0.001:10;
+title("Effects of shifting and scaling on x(t)");
+xlabel("t");
+ylabel("Original x(t)");
+plot(t, problem6_x(t));
+
+%% Problem 6a ii
+t = -5:0.001:10;
+title("Effects of shifting and scaling on x(t)");
+xlabel("t");
+ylabel("3 * x(t + 1)");
+plot(t, 3*problem6_x(t+1));
+
+%% Problem 6a iii
+t = -5:0.001:10;
+title("Effects of shifting and scaling on x(t)");
+xlabel("t");
+ylabel("3 * x(5 * t)");
+plot(t, 3*problem6_x(5*t));
+
+%% Problem 6a iv
+t = -5:0.001:10;
+title("Effects of shifting and scaling on x(t)");
+xlabel("t");
+ylabel("-2 * x((t - 2) / 5)");
+plot(t, -2*problem6_x((t-2)/5));
+
+%% Problem 6b - Calculating derivatives using MATLAB 'diff' command
+syms t; % Use the symbolic math toolbox
+fprintf('The derivative of %s is:\n\t%s\n', ...
+        'sin(2 * pi * t) * sign(t)', ...
+        diff(sin(2 * pi * t) * sign(t)));
+fprintf('The derivative of %s is:\n\t%s\n', ...
+        'abs(cos(2 * pi * t))', ...
+        diff(abs(cos(2 * pi * t))));
+
+%% Problem 6c - Calculating integrals using MATLAB 'int' command
+syms t; % Use the symbolic math toolbox
+fprintf('The integral of %s is:\n\t%s\n', ...
+        '(3 * t) * sin(2 * pi * t)', ...
+        int((3 * t) * sin(2 * pi * t)));
+fprintf('The integral of %s is:\n\t%s\n', ...
+        '4 * exp(-18 * t)', ...
+        int(4 * exp(-18 * t)));
+    
 %% Function Definitions
 %
 % <include>playsound.m</include>
 %
 % <include>mydouble.m</include>
-
-
-<<<<<<< HEAD
-=======
-function out = double(in)
-	tmp = 1:.5:length(in);
-	out = (in(floor(tmp)) + in(ceil(tmp)))/2;
-end
-
-%%Problem 6 - Part a)
-%%M file for the function x(t) as defined with the respective time ranges 't'
-function y = x(t)
-
-	% Calculate the functional variation for each range of time, t
-	x1 = (-4*t) - 6; 
-	x2 = -4 - (3*t); 
-	x3 = 16 - (2*t);
-	
-	% Splice together the different functional variations in
-	% their respective ranges of validity
-	y = x1.*(-2<t & t<0) + x2.*(0<t & t<4) + x3.*(4<t & t<8);
-end 
-
-%%Code for testing the function x(t)
-%% Suitable Range of t
-t = -5:0.001:10;
-
-%%Assigning the respective plots to variables
-x0 = x(t);
-x1 = 3 * x(t + 1);
-x2 = 3 * x(5 * t);
-x3 = -2 * x((t - 2) / 5);
-
-%%Plotting the different transformations
-title("Effects of shifting and scaling on x(t)");
-xlabel("t");
-ylabel("Original x(t)");
-plot(t, x0);
-
-title("Effects of shifting and scaling on x(t)");
-xlabel("t");
-ylabel("3 * x(t + 1)");
-plot(t, x1);
-
-title("Effects of shifting and scaling on x(t)");
-xlabel("t");
-ylabel("3 * x(5 * t)");
-plot(t, x2);
-
-title("Effects of shifting and scaling on x(t)");
-xlabel("t");
-ylabel("-2 * x((t - 2) / 5)");
-plot(t, x3);
-
-%%Problem 6 - Part b) and c)
-%%Using symbolic differentiation and integration by using symbol 't'
-t = sym('t');
-
-%%Calculating derivatives using MATLAB 'diff' command
-a = sin(2 * pi * t) * sign(t);
-b = abs(cos(2 * pi * t));
-
-d1 = diff(a); d2 = diff(b);
-
-%%Calculating integrals using MATLAB 'int' command
-c = (3 * t) * sin(2 * pi * t);
-d = 4 * exp(-18 * t);
-
-integral1 = int(c); integral2 = int(d);
->>>>>>> cce575535fe41ac6b38c2ee77cc5d6f29485be8d
