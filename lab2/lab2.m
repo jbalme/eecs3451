@@ -120,6 +120,45 @@ y2=flipud(y);
 fprintf('Playing at input frequency %d Hz\n', Fs);
 playsound(y2,Fs);
 
+%%Probelm 5 code
+%%
+function answer = message_OR_power(t)
+
+N = length(t);
+time_avg = (sum(t)) / N;
+
+squared_avg = sum(t .^ 2) / N;
+
+if (squared_avg ~= 0 && ( 0 < time_avg && time_avg < 0.13))
+    answer = 0; %power
+else
+    answer = 1;  %message
+end
+end
+
+%% Comannds to test our functions message_OR_power
+%%Problem 5a)
+%%% Defining a time period between 0 and 1 at intervals of 0.01
+t = 0:0.01:1;
+y = message_OR_power(sin(10*t));
+% Result = 0
+
+%%Problem 5b)
+t = 0:0.01:1;
+y = message_OR_power(cos(2*pi*t));
+% Result = 0
+
+%%Problem 5c)
+t = 0:0.01:1;
+y = message_OR_power(4.*exp(-t/4).*rectangularPulse((t-4)/3));
+% Result = 1
+
+%%Problem 5d)
+t = 0:0.1:1;
+y = message_OR_power(4.*exp(-t/4).*heaviside(t-1).*sign(t-2));
+% Result = 1
+
+
 %%Problem 6a
 %
 % <include>problem6_x.m</include>
