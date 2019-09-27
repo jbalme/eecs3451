@@ -150,3 +150,34 @@ function y = x(t)
 	% their respective ranges of validity
 	y = x1.*(-2<t & t<0) + x2.*(0<t & t<4) + x3.*(4<t & t<8);
 end 
+
+%%Code for testing the function x(t)
+%% Suitable Range of t
+t = -5:0.001:10;
+
+%%Assigning the respective plots to variables
+x0 = x(t);
+x1 = 3 * x(t + 1);
+x2 = 3 * x(5 * t);
+x3 = -2 * x((t - 2) / 5);
+
+%%Plotting the different transformations
+title("Effects of shifting and scaling on x(t)");
+xlabel("t");
+ylabel("Original x(t)");
+plot(t, x0);
+
+title("Effects of shifting and scaling on x(t)");
+xlabel("t");
+ylabel("3 * x(t + 1)");
+plot(t, x1);
+
+title("Effects of shifting and scaling on x(t)");
+xlabel("t");
+ylabel("3 * x(5 * t)");
+plot(t, x2);
+
+title("Effects of shifting and scaling on x(t)");
+xlabel("t");
+ylabel("-2 * x((t - 2) / 5)");
+plot(t, x3);
