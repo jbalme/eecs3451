@@ -25,6 +25,12 @@
 % chiptunes, ramp sounds similar to sine.
 %
 %% Problem 2
+%
+% * The lower the sampling frequency of the signal, the more muffled it
+% sounds.
+% * The higher the sampling frequency of the signal, the more clear it
+% sounds. Oversampling beyond that of the input signal has no effect,
+% however.
 
 [y,Fs] = audioread('P_2_1.wav');
 plot([1:size(y)]./Fs,y);
@@ -38,12 +44,9 @@ for Fs2=[2000,4000,6000,12000]
    playsound(y2,Fs2);
 end
 
-%%-----ANSWER TO PROBLEM 2 -------
-% The hihger the sampling frequency the input audio file is more clear and
-% the lower the smalping frequency the more muffled the noise becomes
 
 
-%% Problem 3 A
+%% Problem 3a - 100 Hz triangle wave
 % Unlike in Problem 2, changing the sampling rate doesn't seem to affect
 % the quality of the sound.
 
@@ -60,7 +63,7 @@ for Fs2=[2000,4000,6000,12000]
    playsound(y2,Fs2);
 end
 
-%% Problem 3 b)
+%% Problem 3b - voice sample
 % This time, much like in Problem 2, the sampling rate affects the quality
 % of the sound greatly.
 
