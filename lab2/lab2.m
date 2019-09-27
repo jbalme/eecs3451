@@ -1,10 +1,22 @@
 %% EECS 3451 Lab1
-% *AUTHORS*
+
+
+%% AUTHORS
 % 
-% 
-% * Jonathan Baldwin
-% * Mark Savin
-% * Sarwat Shaheen (214677322)
+% * Jonathan Baldwin (212095691)
+% * Mark Savin       (212921128)
+% * Sarwat Shaheen   (214677322)
+%
+
+%% playsound function
+% This is a blocking version of the built-in sound function.
+%
+% <include>playsound.m</include>
+
+%% mydouble function
+% This is the double function from the previous lab.
+%
+% <include>mydouble.m</include>
 
 %% Problem 1
 % As the frequency varies, so does the pitch proportionally. Doubling the
@@ -34,6 +46,9 @@
 
 [y,Fs] = audioread('P_2_1.wav');
 plot([1:size(y)]./Fs,y);
+title('Voice sample (P_2_1.wav)');
+xlabel('time (s)');
+ylabel('Amplitude');
 
 fprintf('Playing at input frequency (%d)\n', Fs);
 playsound(y,Fs);
@@ -53,6 +68,9 @@ end
 
 [y,Fs] = audioread('P_3_1.wav');
 plot([1:size(y)]./Fs,y);
+title('100Hz Triangle Wave (P_3_1.wav)');
+xlabel('time (s)');
+ylabel('Amplitude');
 
 fprintf('Playing at input frequency (%d)\n', Fs);
 playsound(y,Fs);
@@ -69,6 +87,9 @@ end
 
 [y,Fs] = audioread('P_3_2.wav');
 plot([1:size(y)]./Fs,y);
+title('Student Voice Sample (P_3_2.wav)');
+xlabel('time (s)');
+ylabel('Amplitude');
 
 fprintf('Playing at input frequency (%d)\n', Fs);
 playsound(y,Fs);
@@ -84,7 +105,6 @@ end
 % all.
 
 [y,Fs] = audioread('P_3_2.wav');
-plot([1:size(y)]./Fs,y);
 
 y2=mydouble(y);
 fprintf('Playing at input frequency %d Hz, doubled to %d\n', Fs, Fs*2);
@@ -120,77 +140,79 @@ y2=flipud(y);
 fprintf('Playing at input frequency %d Hz\n', Fs);
 playsound(y2,Fs);
 
-%%Probelm 5 code
-%%
-function answer = message_OR_power(t)
+%% Problem 5
+% 
+% <include>message_OR_power.m</include>
+%
 
-N = length(t);
-time_avg = (sum(t)) / N;
-
-squared_avg = sum(t .^ 2) / N;
-
-if (squared_avg ~= 0 && ( 0 < time_avg && time_avg < 0.13))
-    answer = 0; %power
+%% Problem 5a)
+t = 0:0.01:1;
+fprintf('sin(10*t) is a ');
+if message_OR_power(sin(10*t)) == 1
+    disp('message signal');
 else
-    answer = 1;  %message
+    disp('power signal');
 end
+
+%% Problem 5b)
+t = 0:0.01:1;
+fprintf('cos(2*pi*t) is a ');
+if message_OR_power(cos(2*pi*t)) == 1
+    disp('message signal');
+else
+    disp('power signal');
 end
 
-%% Comannds to test our functions message_OR_power
-%%Problem 5a)
-%%% Defining a time period between 0 and 1 at intervals of 0.01
+%% Problem 5c)
 t = 0:0.01:1;
-y = message_OR_power(sin(10*t));
-% Result = 0
+fprintf('4.*exp(-t/4).*rectangularPulse((t-4)/3) is a ');
+if message_OR_power(4.*exp(-t/4).*rectangularPulse((t-4)/3)) == 1
+    disp('message signal');
+else
+    disp('power signal');
+end
 
-%%Problem 5b)
+%% Problem 5d)
 t = 0:0.01:1;
-y = message_OR_power(cos(2*pi*t));
-% Result = 0
+fprintf('4.*exp(-t/4).*heaviside(t-1).*sign(t-2) is a ');
+if message_OR_power(4.*exp(-t/4).*heaviside(t-1).*sign(t-2)) == 1
+    disp('message signal');
+else
+    disp('power signal');
+end
 
-%%Problem 5c)
-t = 0:0.01:1;
-y = message_OR_power(4.*exp(-t/4).*rectangularPulse((t-4)/3));
-% Result = 1
-
-%%Problem 5d)
-t = 0:0.1:1;
-y = message_OR_power(4.*exp(-t/4).*heaviside(t-1).*sign(t-2));
-% Result = 1
-
-
-%%Problem 6a
+%% Problem 6a
 %
 % <include>problem6_x.m</include>
 %
 
 %% Problem 6a i
 t = -5:0.001:10;
+plot(t, problem6_x(t));
 title("Effects of shifting and scaling on x(t)");
 xlabel("t");
 ylabel("Original x(t)");
-plot(t, problem6_x(t));
 
 %% Problem 6a ii
 t = -5:0.001:10;
+plot(t, 3*problem6_x(t+1));
 title("Effects of shifting and scaling on x(t)");
 xlabel("t");
 ylabel("3 * x(t + 1)");
-plot(t, 3*problem6_x(t+1));
 
 %% Problem 6a iii
 t = -5:0.001:10;
+plot(t, 3*problem6_x(5*t));
 title("Effects of shifting and scaling on x(t)");
 xlabel("t");
 ylabel("3 * x(5 * t)");
-plot(t, 3*problem6_x(5*t));
 
 %% Problem 6a iv
 t = -5:0.001:10;
+plot(t, -2*problem6_x((t-2)/5));
 title("Effects of shifting and scaling on x(t)");
 xlabel("t");
 ylabel("-2 * x((t - 2) / 5)");
-plot(t, -2*problem6_x((t-2)/5));
 
 %% Problem 6b - Calculating derivatives using MATLAB 'diff' command
 syms t; % Use the symbolic math toolbox
@@ -209,9 +231,11 @@ fprintf('The integral of %s is:\n\t%s\n', ...
 fprintf('The integral of %s is:\n\t%s\n', ...
         '4 * exp(-18 * t)', ...
         int(4 * exp(-18 * t)));
-    
-%% Function Definitions
+
+%% Conclusion
 %
-% <include>playsound.m</include>
-%
-% <include>mydouble.m</include>
+% In this lab we learned how to use MATLAB's ability to record and play
+% sound, and work with WAVE files; how sampling rate affects the quality of
+% a signal; how to determine if a signal is a message signal or a power
+% signal using MATLAB; and how to use the Symbolic Math Toolbox to
+% calculate derivatives and integrals.
