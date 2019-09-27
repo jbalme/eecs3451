@@ -4,7 +4,7 @@
 % 
 % * Jonathan Baldwin
 % * Mark Savin
-% * Sarwat Shaheen
+% * Sarwat Shaheen (214677322)
 
 %% Problem 1
 % As the frequency varies, so does the pitch proportionally. Doubling the
@@ -127,3 +127,71 @@ playsound(y2,Fs);
 % <include>mydouble.m</include>
 
 
+<<<<<<< HEAD
+=======
+function out = double(in)
+	tmp = 1:.5:length(in);
+	out = (in(floor(tmp)) + in(ceil(tmp)))/2;
+end
+
+%%Problem 6 - Part a)
+%%M file for the function x(t) as defined with the respective time ranges 't'
+function y = x(t)
+
+	% Calculate the functional variation for each range of time, t
+	x1 = (-4*t) - 6; 
+	x2 = -4 - (3*t); 
+	x3 = 16 - (2*t);
+	
+	% Splice together the different functional variations in
+	% their respective ranges of validity
+	y = x1.*(-2<t & t<0) + x2.*(0<t & t<4) + x3.*(4<t & t<8);
+end 
+
+%%Code for testing the function x(t)
+%% Suitable Range of t
+t = -5:0.001:10;
+
+%%Assigning the respective plots to variables
+x0 = x(t);
+x1 = 3 * x(t + 1);
+x2 = 3 * x(5 * t);
+x3 = -2 * x((t - 2) / 5);
+
+%%Plotting the different transformations
+title("Effects of shifting and scaling on x(t)");
+xlabel("t");
+ylabel("Original x(t)");
+plot(t, x0);
+
+title("Effects of shifting and scaling on x(t)");
+xlabel("t");
+ylabel("3 * x(t + 1)");
+plot(t, x1);
+
+title("Effects of shifting and scaling on x(t)");
+xlabel("t");
+ylabel("3 * x(5 * t)");
+plot(t, x2);
+
+title("Effects of shifting and scaling on x(t)");
+xlabel("t");
+ylabel("-2 * x((t - 2) / 5)");
+plot(t, x3);
+
+%%Problem 6 - Part b) and c)
+%%Using symbolic differentiation and integration by using symbol 't'
+t = sym('t');
+
+%%Calculating derivatives using MATLAB 'diff' command
+a = sin(2 * pi * t) * sign(t);
+b = abs(cos(2 * pi * t));
+
+d1 = diff(a); d2 = diff(b);
+
+%%Calculating integrals using MATLAB 'int' command
+c = (3 * t) * sin(2 * pi * t);
+d = 4 * exp(-18 * t);
+
+integral1 = int(c); integral2 = int(d);
+>>>>>>> cce575535fe41ac6b38c2ee77cc5d6f29485be8d
