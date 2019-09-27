@@ -4,7 +4,7 @@
 % 
 % * Jonathan Baldwin
 % * Mark Savin
-% * Sarwat Shaheen
+% * Sarwat Shaheen (214677322)
 
 %% Problem 1
 % As the frequency varies, so does the pitch proportionally. Doubling the
@@ -137,7 +137,7 @@ function out = double(in)
 	out = (in(floor(tmp)) + in(ceil(tmp)))/2;
 end
 
-%%Problem 6
+%%Problem 6 - Part a)
 %%M file for the function x(t) as defined with the respective time ranges 't'
 function y = x(t)
 
@@ -181,3 +181,19 @@ title("Effects of shifting and scaling on x(t)");
 xlabel("t");
 ylabel("-2 * x((t - 2) / 5)");
 plot(t, x3);
+
+%%Problem 6 - Part b) and c)
+%%Using symbolic differentiation and integration by using symbol 't'
+t = sym('t');
+
+%%Calculating derivatives using MATLAB 'diff' command
+a = sin(2 * pi * t) * sign(t);
+b = abs(cos(2 * pi * t));
+
+d1 = diff(a); d2 = diff(b);
+
+%%Calculating integrals using MATLAB 'int' command
+c = (3 * t) * sin(2 * pi * t);
+d = 4 * exp(-18 * t);
+
+integral1 = int(c); integral2 = int(d);
