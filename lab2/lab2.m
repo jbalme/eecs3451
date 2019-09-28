@@ -145,8 +145,24 @@ playsound(y2,Fs);
 % <include>message_OR_power.m</include>
 %
 
+
+% t = 0:0.01:10; %% I get the correct values with an input vector of t = 0:0.01:10; It seems the output is dependant on the input vector
+%but I can't say forsure what's going on 
+
+function answer = message_OR_power(t)
+N = length(t);
+time_avg = sum(t) / N;
+squared_avg = sum(t.^2) / N;
+
+if (squared_avg ~= 0 && abs(time_avg) < 0.01)
+    answer = 0; %power
+else
+    answer = 1;  %message
+end
+end
+
 %% Problem 5a)
-t = 0:0.01:1;
+t = 0:0.01:10;
 fprintf('sin(10*t) is a ');
 if message_OR_power(sin(10*t)) == 1
     disp('message signal');
@@ -155,7 +171,7 @@ else
 end
 
 %% Problem 5b)
-t = 0:0.01:1;
+t = 0:0.01:10;
 fprintf('cos(2*pi*t) is a ');
 if message_OR_power(cos(2*pi*t)) == 1
     disp('message signal');
@@ -164,7 +180,7 @@ else
 end
 
 %% Problem 5c)
-t = 0:0.01:1;
+t = 0:0.01:10;
 fprintf('4.*exp(-t/4).*rectangularPulse((t-4)/3) is a ');
 if message_OR_power(4.*exp(-t/4).*rectangularPulse((t-4)/3)) == 1
     disp('message signal');
@@ -173,7 +189,7 @@ else
 end
 
 %% Problem 5d)
-t = 0:0.01:1;
+t = 0:0.01:10;
 fprintf('4.*exp(-t/4).*heaviside(t-1).*sign(t-2) is a ');
 if message_OR_power(4.*exp(-t/4).*heaviside(t-1).*sign(t-2)) == 1
     disp('message signal');
