@@ -123,7 +123,6 @@ end
 % change.
 
 [y,Fs] = audioread('P_3_2.wav');
-plot([1:size(y)]./Fs,y);
 
 y2=fliplr(y);
 fprintf('Playing at input frequency %d Hz\n', Fs);
@@ -134,7 +133,6 @@ playsound(y2,Fs);
 % something out of the Exorcist.
 
 [y,Fs] = audioread('P_3_2.wav');
-plot([1:size(y)]./Fs,y);
 
 y2=flipud(y);
 fprintf('Playing at input frequency %d Hz\n', Fs);
@@ -144,22 +142,6 @@ playsound(y2,Fs);
 % 
 % <include>message_OR_power.m</include>
 %
-
-
-% t = 0:0.01:10; %% I get the correct values with an input vector of t = 0:0.01:10; It seems the output is dependant on the input vector
-%but I can't say forsure what's going on 
-
-function answer = message_OR_power(t)
-N = length(t);
-time_avg = sum(t) / N;
-squared_avg = sum(t.^2) / N;
-
-if (squared_avg ~= 0 && abs(time_avg) < 0.01)
-    answer = 0; %power
-else
-    answer = 1;  %message
-end
-end
 
 %% Problem 5a)
 t = 0:0.01:10;
