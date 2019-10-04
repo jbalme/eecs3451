@@ -11,24 +11,6 @@
 %% defs
 
 nps = 2;
-nf = containers.Map();
-nf('A')      = 2^(0/12);
-nf('A#')     = 2^(1/12);
-nf('Bb')     = 2^(1/12);
-nf('B')      = 2^(2/12);
-nf('C')      = 2^(3/12);
-nf('C#')     = 2^(4/12);
-nf('Db')     = 2^(4/12);
-nf('D')      = 2^(5/12);
-nf('D#')     = 2^(6/12);
-nf('Eb')     = 2^(6/12);
-nf('E')      = 2^(7/12);
-nf('F')      = 2^(8/12);
-nf('F#')     = 2^(9/12);
-nf('Gb')     = 2^(9/12);
-nf('G')      = 2^(10/12);
-nf('G#')     = 2^(11/12);
-nf('Ab')     = 2^(11/12);
 
 %% P1
 
@@ -45,10 +27,14 @@ playsound(ydouble,8000);
 
 %% P3
 
+disp('p3');
+
 y = create_comp_exp(220,8000,1,0.1);
 playsound(y, 8000);
 
 %% P4
+
+disp('p4');
 
 ydblpitch = create_comp_exp(440,8000,1,0.1);
 yhalfpitch = create_comp_exp(110,8000,1,0.1);
@@ -57,6 +43,8 @@ playsound(ydblpitch,8000);
 playsound(yhalfpitch,8000);
 
 %% P5
+
+disp('p5');
 
 yshiftup   = create_comp_exp(220*2^( 1/12),8000,1,0.1);
 yshiftdown = create_comp_exp(220*2^(-1/12),8000,1,0.1);
@@ -67,8 +55,26 @@ playsound(yshiftdown,8000);
 %% funcs
 
 function y = create_comp(f,fs,a)
-    global nps
-    global nf
+    nps = 2;
+    nf = containers.Map();
+    nf('A')      = 2^(0/12);
+    nf('A#')     = 2^(1/12);
+    nf('Bb')     = 2^(1/12);
+    nf('B')      = 2^(2/12);
+    nf('C')      = 2^(3/12);
+    nf('C#')     = 2^(4/12);
+    nf('Db')     = 2^(4/12);
+    nf('D')      = 2^(5/12);
+    nf('D#')     = 2^(6/12);
+    nf('Eb')     = 2^(6/12);
+    nf('E')      = 2^(7/12);
+    nf('F')      = 2^(8/12);
+    nf('F#')     = 2^(9/12);
+    nf('Gb')     = 2^(9/12);
+    nf('G')      = 2^(10/12);
+    nf('G#')     = 2^(11/12);
+    nf('Ab')     = 2^(11/12);
+    
     y = [   
         rest(fs,nps*1/4) ...
         make_note(f*nf('G'), fs,nps*1/8,a) ...
@@ -84,8 +90,26 @@ function y = create_comp(f,fs,a)
 end
 
 function y = create_comp_exp(f,fs,a,tau)
-    global nps
-    global nf
+    nps = 2;
+    nf = containers.Map();
+    nf('A')      = 2^(0/12);
+    nf('A#')     = 2^(1/12);
+    nf('Bb')     = 2^(1/12);
+    nf('B')      = 2^(2/12);
+    nf('C')      = 2^(3/12);
+    nf('C#')     = 2^(4/12);
+    nf('Db')     = 2^(4/12);
+    nf('D')      = 2^(5/12);
+    nf('D#')     = 2^(6/12);
+    nf('Eb')     = 2^(6/12);
+    nf('E')      = 2^(7/12);
+    nf('F')      = 2^(8/12);
+    nf('F#')     = 2^(9/12);
+    nf('Gb')     = 2^(9/12);
+    nf('G')      = 2^(10/12);
+    nf('G#')     = 2^(11/12);
+    nf('Ab')     = 2^(11/12);
+    
     y = [   
         rest(fs,nps*1/4) ...
         make_note_exp(f*nf('G'), fs,nps*1/8,a,tau) ...
@@ -107,7 +131,7 @@ end
 
 function y = make_note_exp(f,fs,d,a,tau)
     t = 0:1/fs:d-1/fs;
-    y = [a.*sin(2*pi*f.*t).*exp(-t/tau) silence(fs,1/8)];
+    y = [exp(-t/tau).*a.*sin(2*pi*f.*t) silence(fs,1/8)];
 end
 
 function y = rest(fs,d)
