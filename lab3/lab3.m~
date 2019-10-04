@@ -37,8 +37,8 @@ playsound(y, 8000);
 yhalf = half(y);
 ydouble = double(y);
 
-playsound(yhalf,8000);
-playsound(ydouble,8000);
+playsound(yhalf);
+playsound(ydouble);
 
 y = create_comp_exp(220,8000,1,0.1);
 playsound(y, 8000);
