@@ -8,8 +8,7 @@
 % * Sarwat Shaheen   (214677322)
 %
 
-%% Problem 1
-
+%% defs
 
 nps = 2;
 nf = containers.Map();
@@ -30,9 +29,13 @@ nf('Gb')     = 2^(9/12);
 nf('G')      = 2^(10/12);
 nf('G#')     = 2^(11/12);
 nf('Ab')     = 2^(11/12);
- 
+
+%% P1
+
 y = create_comp(220,8000,1);
 playsound(y, 8000);
+
+%% P2
 
 yhalf = half(y);
 ydouble = double(y);
@@ -40,8 +43,28 @@ ydouble = double(y);
 playsound(yhalf,8000);
 playsound(ydouble,8000);
 
+%% P3
+
 y = create_comp_exp(220,8000,1,0.1);
 playsound(y, 8000);
+
+%% P4
+
+ydblpitch = create_comp_exp(440,8000,1,0.1);
+yhalfpitch = create_comp_exp(110,8000,1,0.1);
+
+playsound(ydblpitch,8000);
+playsound(yhalfpitch,8000);
+
+%% P5
+
+yshiftup   = create_comp_exp(220*2^( 1/12),8000,1,0.1);
+yshiftdown = create_comp_exp(220*2^(-1/12),8000,1,0.1);
+
+playsound(yshiftup,8000);
+playsound(yshiftdown,8000);
+
+%% funcs
 
 function y = create_comp(f,fs,a)
     global nps
