@@ -91,9 +91,11 @@ playsound(y,8000);
 
 disp('p8');
 y = create_comp_harm(220,8000,.7,0.2,0.1,[2 4 6]);
-y = with_echo(y, 8000, 1, .5);
+y_with_const_echo = add_constant_echo(y, 8000, 1, .5);
+y_with_exp_echo = add_exp_echo(y, 8000, 1, .5, 2);
+y_with_osc_echo = add_osc_echo(y, 8000, 1, 1, 10*pi);
 
-playsound(y,8000);
+playsound(y_with_osc_echo, 8000)
 
 %% funcs
 
@@ -131,8 +133,20 @@ function y = create_comp_harm(f,fs,a,tau,T,h)
     end
 end
 
-function y = with_echo(x, fs, T, a)
+function y = add_constant_echo(x, fs, T, a)
     echo = [zeros(1,fs*T) a.*x];
+    y = [x zeros(1,fs*T)] + echo;
+end
+
+function y = add_exp_echo(x, fs, T, a, tau)
+    t = 0:1/fs:(length(x)-1)/fs;
+    echo = [zeros(1,fs*T) exp(-t/tau).*a.*x];
+    y = [x zeros(1,fs*T)] + echo;
+end
+
+function y = add_osc_echo(x, fs, T, a, w)
+    t = 0:1/fs:(length(x)-1)/fs;
+    echo = [zeros(1,fs*T) cos(w.*t).*a.*x];
     y = [x zeros(1,fs*T)] + echo;
 end
 
