@@ -119,6 +119,11 @@ plot(y);
 playsound(y,8000);
 
 %% P8
+% The delay $T$ controls the delay of the echo.
+% The attenuation factor $a$ controls the volume of the echo added.
+% $mu$ controls how fast the exponentially decaying echo decays; small
+% positive values yield faster decays. $w$ controls the rate at which
+% oscillating echo oscillates, higher values oscillate faster.
 %
 % <include>add_const_echo.m</include>
 %
@@ -127,15 +132,12 @@ playsound(y,8000);
 % <include>add_osc_echo.m</include>
 
 y = create_comp_harm(220,8000,1,0.2,0.1,[2 4 6]);
-y_with_const_echo = add_const_echo(y, 8000, 1, .5);
-y_with_exp_echo = add_exp_echo(y, 8000, 1, .5, 2);
-y_with_osc_echo = add_osc_echo(y, 8000, .5, .1, 5*pi);
 
 playsound(y,8000); 
 
-playsound(add_const_echo(y, 8000, 0.1, 1),8000); 
-playsound(add_exp_echo(y, 8000, 0.1, 1, 2),8000); 
-playsound(add_osc_echo(y, 8000, 0.1, 1, 20),8000); 
+playsound(add_const_echo(y, 8000, 0.5, 0.35),8000); 
+playsound(add_exp_echo(y, 8000, 0.5, 0.35, 1),8000); 
+playsound(add_osc_echo(y, 8000, 0.1, 1, 5),8000); 
 
 %% What we learned
 %

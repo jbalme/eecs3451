@@ -1,6 +1,5 @@
 function y = create_comp_overlap(f,fs,a,tau,T)
 %CREATE_COMP_OVERLAP create a composition, with overlap
-%CREATE_COMP_EXP create a composition with exponential dropoff on notes
 %   f   - base frequency (frequency of the A note)
 %   fs  - sample rate
 %   a   - amplitude
