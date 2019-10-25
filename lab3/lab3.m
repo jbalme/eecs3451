@@ -8,9 +8,13 @@
 % * Sarwat Shaheen   (214677322)
 %
 
-%% defs
-
-nps   = 2;
+%% Some utility variables and functions
+%
+% <include>notefreq.m</include>
+%
+% We store the notes and tempo in a .mat file instead of repeating them in
+% every function.
+nps   = .5;
 notes   = {
     1/8, 'R';
     1/8, 'G';
@@ -25,27 +29,45 @@ notes   = {
     }';
 save composition notes nps;
 
-%% P1
 
-disp('p1');
+%% P1
+%
+% <include>make_note.m</include>
+%
+% <include>create_comp.m</include>
 
 y = create_comp(220,8000,1);
 plot(y);
 playsound(y, 8000);
+audiowrite('composition.wav',y,8000);
 
 %% P2
-
-disp('p2');
+%
+% Running the composition through half doubles the pitch but also doubles
+% the tempo.
+%
+% Running the composition through dbl halves the pitch, but also halves the
+% tempo.
+%
+% <include>half.m</include>
+%
+% <include>dbl.m</include>
 
 yhalf = half(y);
-ydouble = double(y);
+ydouble = dbl(y);
 
 playsound(yhalf,8000);
 playsound(ydouble,8000);
 
 %% P3
-
-disp('p3');
+% Doubling the amplitude appears to quadruple the volume.
+% The exponential dropoff effect is more noticeable on longer notes.
+% The exponential dropoff effect seems to be more noticeable with a smaller
+% tau/attenuation factor.
+%
+% <include>make_note_exp.m</include>
+%
+% <include>create_comp_exp.m</include>
 
 y = create_comp_exp(220,8000,1,0.05);
 plot(y);
@@ -53,8 +75,9 @@ plot(y);
 playsound(y, 8000);
 
 %% P4
-
-disp('p4');
+%
+% We double and half the pitch by doubling and halving the f value passed
+% to create_comp_exp, respectively.
 
 ydblpitch = create_comp_exp(440,8000,1,0.1);
 yhalfpitch = create_comp_exp(110,8000,1,0.1);
@@ -63,8 +86,9 @@ playsound(ydblpitch,8000);
 playsound(yhalfpitch,8000);
 
 %% P5
-
-disp('p5');
+%
+% We can shift the pitch up or down a half step by multiplying or dividing
+% f by a factor of $2^{1/12}$, respectively.
 
 yshiftup   = create_comp_exp(220*2^( 1/12),8000,1,0.1);
 yshiftdown = create_comp_exp(220*2^(-1/12),8000,1,0.1);
@@ -73,134 +97,53 @@ playsound(yshiftup,8000);
 playsound(yshiftdown,8000);
 
 %% P6
-
-disp('p6');
+% Introducing overlap causes the composition to play smoother and faster,
+% but too much overlap causes notes to bleed together.
+%
+% <include>vec_overlap.m</include>
+%
+% <include>create_comp_overlap.m</include>
 
 y = create_comp_overlap(220,8000,.7,0.2,0.1);
 plot(y);
 playsound(y,8000);
 
 %% P7
+% Introducing harmonics causes the composition to have a richer sound, with
+% different harmonics adding different character to the sound.
+%
+% <include>create_comp_harm.m</include>
 
-disp('p7');
 y = create_comp_harm(220,8000,.7,0.2,0.1,[2 4 6]);
 plot(y);
 playsound(y,8000);
 
 %% P8
+%
+% <include>add_const_echo.m</include>
+%
+% <include>add_exp_echo.m</include>
+%
+% <include>add_osc_echo.m</include>
 
-disp('p8');
-y = create_comp_harm(220,8000,.7,0.2,0.1,[2 4 6]);
-y_with_const_echo = add_constant_echo(y, 8000, 1, .5);
+y = create_comp_harm(220,8000,1,0.2,0.1,[2 4 6]);
+y_with_const_echo = add_const_echo(y, 8000, 1, .5);
 y_with_exp_echo = add_exp_echo(y, 8000, 1, .5, 2);
-y_with_osc_echo = add_osc_echo(y, 8000, 1, 1, 10*pi);
+y_with_osc_echo = add_osc_echo(y, 8000, .5, .1, 5*pi);
 
-playsound(y_with_osc_echo, 8000)
+playsound(y,8000); 
 
-%% funcs
+playsound(add_const_echo(y, 8000, 0.1, 1),8000); 
+playsound(add_exp_echo(y, 8000, 0.1, 1, 2),8000); 
+playsound(add_osc_echo(y, 8000, 0.1, 1, 20),8000); 
 
-function y = create_comp(f,fs,a)
-    load composition notes nps;
-    
-    y = [];
-    for n = notes
-        y = [y make_note(notefreq(f, n{2,1}), fs, nps*n{1,1},a)];
-    end
-end
+%% What we learned
+%
+% In this lab, we learned how to transform a harsh sinusoidal tone into
+% pleasant sounding notes and compositions through the use of exponential
+% decay and the introduction of harmonics.
+%
+% We also learned how to apply the DRY (don't repeat yourself) principle to
+% MATLAB code, how MATLAB's save and load functions work, and how to use
+% cell arrays and loops effectively.
 
-function y = create_comp_exp(f,fs,a,tau)
-    load composition notes nps;
-    
-    y = [];
-    for n = notes
-        y = [y make_note_exp(notefreq(f,n{2,1}),fs,nps*n{1,1},a,tau)];
-    end
-end
-
-function y = create_comp_overlap(f,fs,a,tau,T)
-    load composition notes nps;
-    
-    y = [];
-    for n = notes
-        y = vec_overlap(y, make_note_exp(notefreq(f,n{2,1}),fs,nps*n{1,1},a,tau),T*fs);
-    end
-end
-
-function y = create_comp_harm(f,fs,a,tau,T,h)
-    y = create_comp_overlap(f,fs,a,tau,T);
-    for i = h
-        y = y + create_comp_overlap(f*i,fs,a*4^(1-i),tau,T);
-    end
-end
-
-function y = add_constant_echo(x, fs, T, a)
-    echo = [zeros(1,fs*T) a.*x];
-    y = [x zeros(1,fs*T)] + echo;
-end
-
-function y = add_exp_echo(x, fs, T, a, tau)
-    t = 0:1/fs:(length(x)-1)/fs;
-    echo = [zeros(1,fs*T) exp(-t/tau).*a.*x];
-    y = [x zeros(1,fs*T)] + echo;
-end
-
-function y = add_osc_echo(x, fs, T, a, w)
-    t = 0:1/fs:(length(x)-1)/fs;
-    echo = [zeros(1,fs*T) cos(w.*t).*a.*x];
-    y = [x zeros(1,fs*T)] + echo;
-end
-
-function y = make_note(f,fs,d,a)
-    t = 0:1/fs:d-1/fs;
-    y = [a.*sin(2*pi*f.*t) silence(fs,1/8)];
-end
-
-function y = make_note_exp(f,fs,d,a,tau)
-    t = 0:1/fs:d-1/fs;
-    y = [exp(-t/tau).*a.*sin(2*pi*f.*t) silence(fs,1/8)];
-end
-
-function y = silence(fs,d)
-    y = zeros(1,fs*d);
-end
-
-function out = half(in)
-	out = in(:,1:2:end);
-end
-
-function out = double(in)
-	tmp = 1:.5:length(in);
-	out = (in(floor(tmp)) + in(ceil(tmp)))/2;
-end
-
-function y = vec_overlap(v1,v2,t)
-    if length(v1) < t || length(v2) < t
-        y = [v1 v2];
-    else
-        y = [v1(1:length(v1)-t) v1(length(v1)-t+1:end)+v2(1:t) v2(t+1:end) ];
-    end
-end
-
-function y = notefreq(f,n)
-    nf = containers.Map();
-    nf('R')      = 0;
-    nf('A')      = 2^(0/12);
-    nf('A#')     = 2^(1/12);
-    nf('Bb')     = 2^(1/12);
-    nf('B')      = 2^(2/12);
-    nf('C')      = 2^(3/12);
-    nf('C#')     = 2^(4/12);
-    nf('Db')     = 2^(4/12);
-    nf('D')      = 2^(5/12);
-    nf('D#')     = 2^(6/12);
-    nf('Eb')     = 2^(6/12);
-    nf('E')      = 2^(7/12);
-    nf('F')      = 2^(8/12);
-    nf('F#')     = 2^(9/12);
-    nf('Gb')     = 2^(9/12);
-    nf('G')      = 2^(10/12);
-    nf('G#')     = 2^(11/12);
-    nf('Ab')     = 2^(11/12);
-
-    y = f*nf(n);
-end
