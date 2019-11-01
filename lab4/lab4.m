@@ -89,3 +89,28 @@ stem(freqdomain(length(x),Fs),normfft(x));
 xlabel("Frequency")
 ylabel("Signal")
 title("Plot of signal in the frequency domain")
+
+%% Problem - 6
+Fs = 10000;
+t = 0:1/Fs:1;
+f1 = 1000;
+x = sin(2*f1*t) + (1/3)*sin(2*3*f1*t) + (1/5)*sin(2*5*f1*t);
+xlabel("Time");
+ylabel("Signal");
+title("Plot of signal in the time domain");
+plot(t, x);
+stem(freqdomain(length(x),Fs),normfft(x));
+xlabel("Frequency")
+ylabel("Signal")    
+title("Plot of signal in the frequency domain")
+
+xlabel("Time");
+ylabel("Signal");
+title("Plot of noisy signal in the time domain");
+noisySignal = x + (randn(size(x)) + 5);
+plot(t, noisySignal);
+
+xlabel("Frequency")
+ylabel("Signal")    
+title("Plot of noisy signal in the frequency domain")
+stem(freqdomain(length(noisySignal),Fs),normfft(noisySignal))
