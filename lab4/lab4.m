@@ -37,6 +37,8 @@ ylim([0 1]);
 figure
 stem(freqdomain(length(signal),Fs),normfft(signal));
 
+%% 
+
 %% Q3 Gaus Puls
 t=0:1e-2:5;
 d=2.5;
@@ -64,6 +66,6 @@ function y = freqdomain(N, Fs)
     y=k/T;
 end
 
-function y = normfft(x)
+function y = normfft(x,N)
     y = fftshift(fft(x)/length(x));
 end
