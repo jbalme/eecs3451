@@ -73,3 +73,19 @@ function y = normfft(x, varargin)
         y = fftshift(fft(x,varargin{0})/length(x));
     end
 end
+
+
+%% Problem - 5
+Fs = 10000;
+t = 0:1/Fs:1;
+f1 = 1000;
+x = sin(2*f1*t) + (1/3)*sin(2*3*f1*t) + (1/5)*sin(2*5*f1*t);
+xlabel("Time");
+ylabel("Signal");
+title("Plot of signal in the time domain");
+plot(t, x);
+
+stem(freqdomain(length(x),Fs),normfft(x));
+xlabel("Frequency")
+ylabel("Signal")
+title("Plot of signal in the frequency domain")
