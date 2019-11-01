@@ -10,7 +10,7 @@ figure
 plot(t,signal);
 
 figure
-stem(freqdomain(length(t),Fs),abs(normfft(signal)));
+stem(freqdomain(length(t),Fs),abs(normfft(signal, 10)));
 
 %hold on
 %plot(t,real(transform));
@@ -66,6 +66,10 @@ function y = freqdomain(N, Fs)
     y=k/T;
 end
 
-function y = normfft(x,N)
-    y = fftshift(fft(x)/length(x));
+function y = normfft(x, varargin)
+    if length(varargin) == 0
+        y = fftshift(fft(x)/length(x));
+    else
+        y = fftshift(fft(x,varargin{0})/length(x));
+    end
 end
