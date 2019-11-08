@@ -1,22 +1,3 @@
-%% Foo Bar
-
-Fs=100;
-
-t=0:1/Fs:10;
-signal=cos(2*pi*4*t);
-transform=normfft(signal);
-
-figure
-plot(t,signal);
-
-figure
-stem(freqdomain(length(t),Fs),abs(normfft(signal, 10)));
-
-%hold on
-%plot(t,real(transform));
-%plot(t,imag(transform));
-
-
 %% Q1 
 
 Fs = 10e3;              % 10 kHz sampling rate
@@ -27,17 +8,45 @@ t=0:Ts:1-Ts;
 d=0:1e-3:1;             % 1ms period
 w=0.1e-3;               % .1 ms pulse width
 
-signal = pulstran(t,d,@rectpuls,w);
+X = pulstran(t,d,@rectpuls,w);
 
 figure
-plot(t,signal);
+plot(t,X);
 xlim([0 .01]);
 ylim([0 1]);
 
 figure
-stem(freqdomain(length(signal),Fs),normfft(signal));
+stem(freqdomain(length(X),Fs),normfft(X));
 
-%% 
+%% Q2
+% To get the result of the fft to be 501 equi-spaced frequencies between 0
+% and $\pi$, we need 501 samples of [1 2 3 4 5] at $\pi$ sample rate.
+
+in = [1 2 3 4 5];
+
+Fs = pi;                            % sample rate = pi
+Ts = 1/Fs;
+
+t = 0:Ts:500*Ts;
+x = interp1(in, t, 'nearest', 0);   % take samples of input
+F = ((0:1/500:1)*Fs).';             % calculate the frequency domain
+Y = fft(x, 501);
+
+figure;
+
+sgtitle("Title goes here");
+
+plot1 = subplot(2,1,1);
+plot(F, abs(Y));
+xlabel("Frequency");
+ylabel("Magnitude");
+
+plot2 = subplot(2,1,2);
+plot(F, angle(Y));
+xlabel("Frequency");
+ylabel("Angle");
+
+linkaxes([plot1, plot2], 'x');
 
 %% Q3 Gaus Puls
 t=0:1e-2:5;
@@ -54,25 +63,7 @@ plot(t,out);
 plot(t,imag(out));
 hold off
 
-%% fns
 
-function y = freqdomain(N, Fs)
-    if mod(N,2)==0
-        k=-N/2:N/2-1;
-    else
-        k=-(N/2):(N-1)/2;
-    end
-    T=N/Fs;
-    y=k/T;
-end
-
-function y = normfft(x, varargin)
-    if length(varargin) == 0
-        y = fftshift(fft(x)/length(x));
-    else
-        y = fftshift(fft(x,varargin{0})/length(x));
-    end
-end
 
 
 %% Problem - 5
@@ -114,3 +105,23 @@ xlabel("Frequency")
 ylabel("Signal")    
 title("Plot of noisy signal in the frequency domain")
 stem(freqdomain(length(noisySignal),Fs),normfft(noisySignal))
+
+%% fns
+
+function y = freqdomain(N, Fs)
+    if mod(N,2)==0
+        k=-N/2:N/2-1;
+    else
+        k=-(N/2):(N-1)/2;
+    end
+    T=N/Fs;
+    y=k/T;
+end
+
+function y = normfft(x, varargin)
+    if length(varargin) == 0
+        y = fftshift(fft(x)/length(x));
+    else
+        y = fftshift(fft(x,varargin{0})/length(x));
+    end
+end
