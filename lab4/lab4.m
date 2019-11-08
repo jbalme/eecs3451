@@ -22,43 +22,43 @@ stem(freqdomain(length(X),Fs),normfft(X));
 % To get the result of the fft to be 501 equi-spaced frequencies between 0
 % and $\pi$, we need 501 samples of [1 2 3 4 5] at $\pi$ sample rate.
 
-in = [1 2 3 4 5];
+n = -1:3; 
+x = 1:5;                  
+k = 0:500; 
+w = (pi/500)*k;          
 
-Fs = pi;                            % sample rate = pi
-Ts = 1/Fs;
+W = exp(-1i * pi * n' * w);
 
-t = 0:Ts:500*Ts;
-x = interp1(in, t, 'nearest', 0);   % take samples of input
-F = ((0:1/500:1)*Fs).';             % calculate the frequency domain
-Y = fft(x, 501);
+X = x * W ;
 
-figure;
+mag = abs(X); 
+subplot(2, 2, 1);
+plot(k/500,mag);
+title('Magnitude Plot'); 
+xlabel('Frequency'); 
+ylabel('Magnitude');
 
-sgtitle("[1,2,3,4,5] in frequency domain");
+angC = angle(X);
+subplot(2, 2, 2);
+plot(k/500,angC);
+title('Angle Plot'); 
+xlabel('Frequency'); 
+ylabel('Angle');
 
-plot1 = subplot(2,2,1);
-plot(F, abs(Y));
-xlabel("Frequency");
-ylabel("Magnitude");
+real = real(X);
+subplot(2, 2, 3);
+plot(k/500,real);
+title('Real Part'); 
+xlabel('Frequency'); 
+ylabel('Real');
 
-plot2 = subplot(2,2,3);
-plot(F, angle(Y));
-xlabel("Frequency");
-ylabel("Angle");
+img = imag(X);
+subplot(2, 2, 4);
+plot(k/500,img);
+title('Imaginary Part'); 
+xlabel('Frequency'); 
+ylabel('Imaginary');
 
-plot3 = subplot(2,2,2);
-plot(F, real(Y));
-xlabel("Frequency");
-ylabel("Real");
-
-plot4 = subplot(2,2,4);
-plot(F, imag(Y));
-xlabel("Frequency");
-ylabel("Imaginary");
-
-
-linkaxes([plot1, plot2], 'x');
-linkaxes([plot3, plot4], 'x');
 
 %% Q3 Gaus Puls
 t=0:1e-2:5;
