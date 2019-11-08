@@ -36,17 +36,29 @@ figure;
 
 sgtitle("Title goes here");
 
-plot1 = subplot(2,1,1);
+plot1 = subplot(2,2,1);
 plot(F, abs(Y));
 xlabel("Frequency");
 ylabel("Magnitude");
 
-plot2 = subplot(2,1,2);
+plot2 = subplot(2,2,2);
 plot(F, angle(Y));
 xlabel("Frequency");
 ylabel("Angle");
 
+plot3 = subplot(2,2,3);
+plot(F, real(Y));
+xlabel("Frequency");
+ylabel("Real");
+
+plot4 = subplot(2,2,4);
+plot(F, imag(Y));
+xlabel("Frequency");
+ylabel("Imaginary");
+
+
 linkaxes([plot1, plot2], 'x');
+linkaxes([plot3, plot4], 'x');
 
 %% Q3 Gaus Puls
 t=0:1e-2:5;
