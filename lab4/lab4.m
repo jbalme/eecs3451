@@ -75,7 +75,24 @@ plot(t,out);
 plot(t,imag(out));
 hold off
 
+%% Problem - 4
+[audio_in, audio_freq_sampl] = audioread('audio.wav');
 
+audio_fft = fft(audio_in);
+
+%Magnitude and phase plots of the audio signal used from back in Lab 2
+
+figure
+plot(abs(audio_fft));
+title('Magnitude plot of Input Audio in Frequency Spectrum');
+xlabel('Frequency(Hz)');
+ylabel('Magnitude component');
+
+figure
+plot(angle(audio_fft));
+title('Phase plot of Input Audio in Frequency Spectrum');
+xlabel('Frequency(Hz)');
+ylabel('Phase component');
 
 
 %% Problem - 5
