@@ -41,12 +41,12 @@ plot(F, abs(Y));
 xlabel("Frequency");
 ylabel("Magnitude");
 
-plot2 = subplot(2,2,2);
+plot2 = subplot(2,2,3);
 plot(F, angle(Y));
 xlabel("Frequency");
 ylabel("Angle");
 
-plot3 = subplot(2,2,3);
+plot3 = subplot(2,2,2);
 plot(F, real(Y));
 xlabel("Frequency");
 ylabel("Real");
