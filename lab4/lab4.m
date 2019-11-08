@@ -34,7 +34,7 @@ Y = fft(x, 501);
 
 figure;
 
-sgtitle("Title goes here");
+sgtitle("[1,2,3,4,5] in frequency domain");
 
 plot1 = subplot(2,2,1);
 plot(F, abs(Y));
