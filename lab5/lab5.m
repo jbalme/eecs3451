@@ -6,11 +6,11 @@ Fc = 100;
 t = 0:Ts:1-Ts;
 x = cos(10*pi.*t);
 
-[xm,tm] = modulate(x,Fc,Fs);
-[F, X] = do_fft(x, Fs);
-[Fm, Xm] = do_fft(xm, Fc);
+[xm,tm] = modulate(x,Fc,Fs); % modulate x with carrier frequency Fc
+[F, X] = do_fft(x, Fs); % Take the FFT of the original signal
+[Fm, Xm] = do_fft(xm, Fc); % Take the FFT of the modulated signal
 
-playsound(xm,Fs);
+playsound(xm,Fs); % Play the modulated signal
 
 subplot(2,2,1);
 plot(t, x);
@@ -37,7 +37,6 @@ xlabel("Frequency (Hz)");
 ylabel("Magnitude");
 
 save q1.mat t tm x xm Fs Fc
-
 
 %% Q2
 
@@ -108,9 +107,10 @@ load q1.mat t x xm Fs Fc
 
 x2 = xm.*cos(2*pi*Fc*t);            % demodulate the signal
 x2f = low_pass_filter(x2,Fs,Fc/2);  % low pass with cutoff Fc/2
-[F2, X2] = do_fft(x2, Fs);
-[F2f, X2f] = do_fft(x2f, Fs);
-[F, X] = do_fft(x, Fs);
+
+[F2, X2] = do_fft(x2, Fs);          % Take FFT of demodulated
+[F2f, X2f] = do_fft(x2f, Fs);       % Take FFT of filtered
+[F, X] = do_fft(x, Fs);             % Take FFT of original
 
 subplot(3,2,1);
 plot(t,x2);
@@ -123,7 +123,6 @@ plot(F2, abs(X2));
 title(["Demodulated signal", "(Frequency domain)"]);
 xlabel('Frequency (Hz)');
 ylabel('Magnitude');
-
 
 subplot(3,2,3);
 plot(t,x2f);
@@ -152,13 +151,13 @@ ylabel('Magnitude');
 
 %% Q4
 
-[xm, Fs] = audioread("P_12_2.WAV");  %  Reading the input audio file provided in Moodle
+[xm, Fs] = audioread("P_12_2.WAV");     %  Reading the input audio file provided in Moodle
 t = (0:length(xm)-1)/Fs;
 xm = xm';
 
-Fc = 16000; % Carrier frequency of 16000, determined by plotting the FFT of xm
-x2 = xm .* cos(2*pi*Fc*t);
-x2f = low_pass_filter(x2, Fs, Fc/2);
+Fc = 16000;                             % Carrier frequency of 16000, determined by plotting the FFT of xm
+x2 = xm .* cos(2*pi*Fc*t);              % Demodulate the signal
+x2f = low_pass_filter(x2, Fs, Fc/2);    % Low pass filter with cutoff Fc/2
 
 [Fm,Xm] = do_fft(xm, Fs);
 [F2f,X2f] = do_fft(x2f, Fs);
