@@ -175,6 +175,9 @@ playsound(x2f, Fs);
 
 
 %% What we learned
+% We learned how to amplitude modulate and demodulate a signal, how to
+% identify the carrier frequency of an amplitude modulated signal from it's
+% FFT plot.
 
 %% Functions
 function playsound(y, Fs)
@@ -187,22 +190,20 @@ function playsound(y, Fs)
     playblocking(audioplayer(y,Fs));
 end
 
-
-
 function [F, X] = do_fft(x,Fs)
 %DO_FFT wrapper around fft, fftshift
 %Returns the frequency domain and a zero-centered FFT
-    NFFT = length(x);
-    F = Fs*(-NFFT/2:NFFT/2-1)/NFFT;
-    X = fftshift(fft(x,NFFT));
+    NFFT = length(x);               % NFFT = length of vector
+    F = Fs*(-NFFT/2:NFFT/2-1)/NFFT; % The frequency domain values
+    X = fftshift(fft(x,NFFT));      % Return frequency domain values, zero centered
 end
 
 function y = low_pass_filter(x,Fs,cutoff)
 %LOW_PASS_FILTER
     NFFT = length(x);
-    X = fftshift(fft(x, NFFT));
-    F = Fs*(-NFFT/2:NFFT/2-1)/NFFT;
-    R = rectpuls(F,2*cutoff);
+    X = fftshift(fft(x, NFFT));     % Put in frequency domain
+    F = Fs*(-NFFT/2:NFFT/2-1)/NFFT; % The freqency domain values
+    R = rectpuls(F,2*cutoff);       % Multiply by rect with pulse width 2*cutoff
     X = X.*R;
-    y = real(ifft(ifftshift(X)));
+    y = real(ifft(ifftshift(X)));   % Return real-domain of FFT
 end
