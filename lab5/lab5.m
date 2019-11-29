@@ -1,3 +1,13 @@
+%% EECS 3451 Lab 5
+
+
+%% AUTHORS
+% 
+% * Jonathan Baldwin (212095691)
+% * Mark Savin       (212921128)
+% * Sarwat Shaheen   (214677322)
+%
+
 %% Q1
 
 Fs = 400;
@@ -45,60 +55,76 @@ save q1.mat t tm x xm Fs Fc
 x = x';
 t = (0:length(x)-1)/Fs; % time domain of original signal
 
-% Generate FFT and plot
-subplot(4,2,1);
-plot(t,x);
-title('input file');
-
-fp1 = subplot(4,2,2);
-[F, X] = do_fft(x, Fs);
-plot(F, abs(X));
-
-title('input file');
-
 % Downsample to 8kHz
 Fc = 8000;
 Fs2 = Fc; % Effective bandwidth = 4000 Hz
 
-
 td = 0:1/Fs2:max(t);
 xd = interp1(t,x,td,'linear');
 
-% generate FFT and plot
-subplot(4,2,3);
-plot(td, xd);
-
-fp2 = subplot(4,2,4);
-[F, X] = do_fft(xd, Fs2);
-plot(F, abs(X));
-title('downsampled');
-
 % Upsample to 24kHz
 Fs3 = 2*Fc+Fs2;
-
 Fsu = Fs3;
-
 tu = 0:1/Fsu:max(td);
 xu = interp1(td,xd,tu,'linear');
+
+% Modulate
+xm = modulate(xu, tu, Fc);
+
+% Plot
+subplot(4,2,1);
+plot(t,x);
+title(["Input signal","(Time domain)"]);
+xlabel("Time (s)");
+ylabel("Value");
+
+fp1 = subplot(4,2,2);
+[F, X] = do_fft(x, Fs);
+plot(F, abs(X));
+title(["Input signal","(Frequency domain)"]);
+xlabel("Frequency (Hz)");
+ylabel("Magnitude");
+
+subplot(4,2,3);
+plot(td, xd);
+title(["Downsampled signal","(Time domain)"]);
+xlabel("Time (s)");
+ylabel("Value");
+
+fp2 = subplot(4,2,4);
+[Fd, Xd] = do_fft(xd, Fs2);
+plot(Fd, abs(Xd));
+title(["Downsampled signal","(Frequency domain)"]);
+xlabel("Frequency (Hz)");
+ylabel("Magnitude");
 
 % generate FFT and plot
 subplot(4,2,5);
 plot(tu, xu);
+title(["Upsampled signal","(Time domain)"]);
+xlabel("Time (s)");
+ylabel("Value");
 
 fp3 = subplot(4,2,6);
-[F, X] = do_fft(xu, Fsu);
-plot(F, abs(X));
-
-% modulate
-xm = modulate(xu, tu, Fc);
+[Fu, Xu] = do_fft(xu, Fsu);
+plot(Fu, abs(Xu));
+title(["Upsampled signal","(Frequency domain)"]);
+xlabel("Frequency (Hz)");
+ylabel("Magnitude");
 
 % generate FFT and plot
 subplot(4,2,7);
 plot(tu, xm);
+title(["Modulated signal","(Time domain)"]);
+xlabel("Time (s)");
+ylabel("Value");
 
 fp4 = subplot(4,2,8);
-[F, X] = do_fft(xm, Fsu);
-plot(F, abs(X));
+[Fm, Xm] = do_fft(xm, Fsu);
+plot(Fm, abs(Xm));
+title(["Modulated signal","(Frequency domain)"]);
+xlabel("Frequency (Hz)");
+ylabel("Magnitude");
 
 
 %% Q3
@@ -164,12 +190,24 @@ x2f = low_pass_filter(x2, Fs, Fc/2);    % Low pass filter with cutoff Fc/2
 
 subplot(2,2,1);
 plot(t,xm);
+title(["Input signal", "(Time domain)"]);
+xlabel('Time (s)');
+ylabel('Value');
 subplot(2,2,3);
 plot(t,x2f);
+title(["Input signal", "(Frequency domain)"]);
+xlabel('Frequency (Hz)');
+ylabel('Magnitude');
 subplot(2,2,2);
 plot(Fm,abs(Xm));
+title(["Demodulated signal", "(Time domain)"]);
+xlabel('Time (s)');
+ylabel('Value');
 subplot(2,2,4);
 plot(F2f,abs(X2f));
+title(["Demodulated signal", "(Frequency domain)"]);
+xlabel('Frequency (Hz)');
+ylabel('Magnitude');
 
 playsound(x2f, Fs);
 
