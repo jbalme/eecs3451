@@ -11,6 +11,8 @@ x = cos(10*pi.*t);
 [F, X] = do_fft(x, Fs);
 [Fm, Xm] = do_fft(xm, Fc);
 
+playsound(xm,Fs);
+
 subplot(2,2,1);
 plot(t, x);
 title(["Original signal", "(Time domain)"]);
@@ -174,13 +176,9 @@ plot(F2f,abs(X2f));
 playsound(x2f, Fs);
 
 
-%% foo
+%% What we learned
 
-t = linspace(1,10,1024);
-x = -(t-5).^2  + 2;
-y = awgn(x,0.5);
-z = low_pass_filter(y, 1024, 20);
-
+%% Functions
 function playsound(y, Fs)
 %PLAYSOUND blocking version of sound()
     % On Linux, refuses to play at anything other than 44100 Hz
@@ -191,13 +189,18 @@ function playsound(y, Fs)
     playblocking(audioplayer(y,Fs));
 end
 
+
+
 function [F, X] = do_fft(x,Fs)
+%DO_FFT wrapper around fft, fftshift
+%Returns the frequency domain and a zero-centered FFT
     NFFT = length(x);
     F = Fs*(-NFFT/2:NFFT/2-1)/NFFT;
     X = fftshift(fft(x,NFFT));
 end
 
 function y = low_pass_filter(x,Fs,cutoff)
+%LOW_PASS_FILTER
     NFFT = length(x);
     X = fftshift(fft(x, NFFT));
     F = Fs*(-NFFT/2:NFFT/2-1)/NFFT;
